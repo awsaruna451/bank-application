@@ -4,19 +4,22 @@ import com.aruna.entity.*;
 import com.aruna.mapper.FacilityEntityMapper;
 import com.aruna.mapper.FacilityEntityOutMapper;
 import com.aruna.model.Facility;
+import com.aruna.model.FacilityDetails;
+import com.aruna.model.LoanDetails;
 import com.aruna.repository.*;
 import com.aruna.utilities.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -137,6 +140,31 @@ public class FacilityRequestImpl implements FacilityRequestService{
 
         return list;
     }
+
+    @Override
+    public FacilityDetails getFacilityDetails(Integer customerId) throws Exception {
+
+        AccountEntity account = accountRepository.findByCustomerIdFk(customerId);
+
+        List<LoanFacilityEntity> loans = loanFacilityRepository.findByCustomerIdFk(customerId);
+
+       List<LoanDetails> loansList =  loans.stream().map(loan-> {
+           return LoanDetails.builder()
+                   .loanNo(loan.getFacilityNo())
+                   .id(loan.getFacilityIdPk())
+                   .rentalAmount(loan.getRentalAmount())
+                   .build();
+               }
+       ).collect(Collectors.toList());
+
+        FacilityDetails facilityDetails = FacilityDetails.builder()
+                .account(account)
+                .loans(loansList)
+                .build();
+
+        return facilityDetails;
+    }
+
 
 
 }

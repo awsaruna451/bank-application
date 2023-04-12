@@ -12,7 +12,7 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(value = { CustomerException.class })
     public ResponseEntity<Object> handleNotFoundException(CustomerException ex, WebRequest request) {
-        String errorMessage = "Entity not found: " + ex.getMessage();
+        String errorMessage = "Entity issue: " + ex.getMessage();
         ApiError apiError = ApiError.builder()
                 .message(errorMessage)
                 .status(HttpStatus.NOT_IMPLEMENTED)
