@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +25,7 @@ public class PaymentController {
     private TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse> payment(@RequestBody Payment payment, HttpServletRequest request) throws Exception {
+    public ResponseEntity<ApiResponse> payment(@RequestBody Payment payment) throws Exception {
         ApiResponse<Payment> response = null;
         Payment userResponse =  paymentService.payment(payment);
          if (Optional.ofNullable(userResponse).isPresent()) {
@@ -36,7 +35,7 @@ public class PaymentController {
     }
 
     @GetMapping("/transaction/{accountId}")
-    public ResponseEntity<ApiResponse> getPaymentTransaction(@PathVariable Integer accountId, HttpServletRequest request) throws Exception {
+    public ResponseEntity<ApiResponse> getPaymentTransaction(@PathVariable Integer accountId) throws Exception {
         ApiResponse<List<AccountTransactionEntity>> response = null;
         List<AccountTransactionEntity> userResponse =  transactionService.getTransaction(accountId);
          if (Optional.ofNullable(userResponse).isPresent()) {

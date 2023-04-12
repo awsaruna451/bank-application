@@ -1,24 +1,29 @@
 package com.aruna.mapper;
 
 import com.aruna.entity.CustomerEntity;
+import com.aruna.entity.Role;
 import com.aruna.entity.UserEntity;
 import com.aruna.model.Customer;
 import com.aruna.model.User;
 import com.aruna.utilities.CustomerStatus;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
+@AllArgsConstructor
 public class UserInitiationEntityMapper {
+
+    private final PasswordEncoder passwordEncoder;
 
     public UserEntity map(User user) {
         return UserEntity.builder()
                 .branchIdFk(user.getBranchId())
                 .userName(user.getUserName())
                 .userIdPk(user.getUserId())
-                .password(user.getPassword())
+                .password(passwordEncoder.encode(user.getPassword()))
                 .userEmail(user.getEmail())
+                .role(Role.USER)
                 .customerType(user.getCustomerType())
                 .build();
     }

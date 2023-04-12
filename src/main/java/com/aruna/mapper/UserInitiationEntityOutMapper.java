@@ -16,7 +16,7 @@ public class UserInitiationEntityOutMapper {
         return User.builder()
                 .userId(user.getUserIdPk())
                 .branchId(user.getBranchIdFk())
-                .userName(user.getUserName())
+                .userName(user.getUsername())
                 .password(user.getPassword())
                 .email(user.getUserEmail())
                 .customerType(user.getCustomerType())
