@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+  bank_application_mysql:
+    image: mysql:latest
+    container_name: bank_application_mysql
+    networks:
+      example_local_network:
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_ROOT_PASSWORD: 'abc123'
+      MYSQL_DATABASE: 'abc-bank'
+      MYSQL_USER: 'test_user'
+      MYSQL_PASSWORD: 'abc'
+
+  bank_application_backend:
+    build: .
+    networks:
+      example_local_network:
+    ports:
+      - 8181:8181
+      - 8787:8787
+
+networks:
+  example_local_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.7.0.0/16
